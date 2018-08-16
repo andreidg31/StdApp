@@ -14,32 +14,16 @@ namespace StandardApp
 			InitializeComponent();
 		}
 
-        private async void button_Pressed(object sender, EventArgs e)
+        private async void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            Page page = (Page)Activator.CreateInstance(typeof(HelloPage));
-            //await Navigation.PushModalAsync(page);
-            await Navigation.PushAsync(page);
-        }
+            (sender as ListView).SelectedItem = null;
 
-        private async void button2_Pressed(object sender, EventArgs e)
-        {
-            Page page = (Page)Activator.CreateInstance(typeof(XamlAndCode));
-            //await Navigation.PushModalAsync(page);
-            await Navigation.PushAsync(page);
-        }
-
-        private async void button1_Pressed(object sender, EventArgs e)
-        {
-            Page page = (Page)Activator.CreateInstance(typeof(AbsoluteDemo));
-            //await Navigation.PushModalAsync(page);
-            await Navigation.PushAsync(page);
-        }
-
-        private async void button3_Pressed(object sender, EventArgs e)
-        {
-            Page page = (Page)Activator.CreateInstance(typeof(GridDemo));
-            //await Navigation.PushModalAsync(page);
-            await Navigation.PushAsync(page);
+            if (args.SelectedItem != null)
+            {
+                PageDataViewModel pageData = args.SelectedItem as PageDataViewModel;
+                Page page = (Page)Activator.CreateInstance(pageData.Type);
+                await Navigation.PushAsync(page);
+            }
         }
     }
 }
